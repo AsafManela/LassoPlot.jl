@@ -17,6 +17,12 @@ then plot it
 ```julia
 plot(path)
 ```
+
+Use x=:segment, :λ, or :logλ to change the x-axis, as in:
+```julia
+plot(path; x=:logλ)
+```
+
 The following keyword arguments can be used:
 By default it shows non zero coefficients at the AICc in color and the rest grayed out.
 Use selectedvars to select a subset of the variables to present.
@@ -24,4 +30,3 @@ The minimum AICc segment is represented by a solid vertical line and the CVmin a
 To specify other selection criteria use the select=:AICc, :CVmin, or :CV1se.
 Vertical lines are determined by showselectors=[:AICc,:CVmin,:CV1se].
 varnames can be used to specify variable names
-use x=:segment, :λ, or :logλ to change the x-axis
