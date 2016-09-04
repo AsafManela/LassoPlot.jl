@@ -1,5 +1,6 @@
 module LassoPlot
 
-# package code goes here
+using Lasso
+include("plots.jl")
 
 end # module

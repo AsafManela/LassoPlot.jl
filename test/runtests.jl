@@ -1,5 +1,3 @@
-using LassoPlot
-using Base.Test
+using Lasso, LassoPlot
 
-# write your own tests here
-@test 1 == 1
+include("plots.jl")
