@@ -8,7 +8,7 @@ plotspath = joinpath(dirname(@__FILE__), "plots")
 mkpath(plotspath)
 
 srand(243214)
-facts("GammaLassoPath") do
+facts("plot GammaLassoPath's") do
     for (family, dist, link) in (("gaussian", Normal(), IdentityLink()), ("binomial", Binomial(), LogitLink()), ("poisson", Poisson(), LogLink()))
         context(family) do
             data = readcsv(joinpath(datapath,"gamlr.$family.data.csv"))
