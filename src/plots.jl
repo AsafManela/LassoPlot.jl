@@ -9,7 +9,7 @@ function Gadfly.plot(path::RegularizationPath, gadfly_args...;
     (p,nλ)=size(β)
 
     if varnames==nothing
-        varnames=[symbol("x$i") for i=1:p]
+        varnames=[Symbol("x$i") for i=1:p]
     end
 
     indata=DataFrame()
