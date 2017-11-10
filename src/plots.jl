@@ -16,7 +16,7 @@ function Gadfly.plot(path::RegularizationPath, gadfly_args...;
     if x==:λ
         indata[x]=path.λ
     elseif x==:logλ
-        indata[x]=log(path.λ)
+        indata[x]=log.(path.λ)
     else
         x=:segment
         indata[x]=1:nλ
