@@ -1,7 +1,7 @@
 # Comparing with Matt Taddy's gamlr.R
 # To rebuild the test cases source(gammalasso.R)
 # using Lasso
-using DataFrames, Gadfly, FactCheck
+using DataFrames, CSV, Gadfly, FactCheck
 
 datapath = joinpath(Pkg.dir("Lasso"),"test","data")
 plotspath = joinpath(dirname(@__FILE__), "plots")
@@ -11,18 +11,18 @@ srand(243214)
 facts("plot GammaLassoPath's") do
     for (family, dist, link) in (("gaussian", Normal(), IdentityLink()), ("binomial", Binomial(), LogitLink()), ("poisson", Poisson(), LogLink()))
         context(family) do
-            data = readcsv(joinpath(datapath,"gamlr.$family.data.csv"))
+            data = CSV.read(joinpath(datapath,"gamlr.$family.data.csv"))
             y = convert(Vector{Float64},data[:,1])
             X = convert(Matrix{Float64},data[:,2:end])
             (n,p) = size(X)
             for γ in [0 2 10]
-                fitname = "gamma$γ"
+                fitname = "gamma$γ.pf1"
                 # get gamlr.R params and estimates
-                params = readtable(joinpath(datapath,"gamlr.$family.$fitname.params.csv"))
-                fittable = readtable(joinpath(datapath,"gamlr.$family.$fitname.fit.csv"))
-                gcoefs = convert(Matrix{Float64},readcsv(joinpath(datapath,"gamlr.$family.$fitname.coefs.csv")))
-                family = params[1,:fit_family]
-                γ=params[1,:fit_gamma]
+                params = CSV.read(joinpath(datapath,"gamlr.$family.$fitname.params.csv"))
+                fittable = CSV.read(joinpath(datapath,"gamlr.$family.$fitname.fit.csv"))
+                gcoefs = convert(Matrix{Float64},CSV.read(joinpath(datapath,"gamlr.$family.$fitname.coefs.csv")))
+                family = params[1,Symbol("fit.family")]
+                γ=params[1,Symbol("fit.gamma")]
                 # λ = convert(Vector{Float64},fittable[:fit_lambda]) # should be set to nothing evenatually
                 context("γ=$γ") do
 

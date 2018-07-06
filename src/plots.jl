@@ -86,8 +86,8 @@ function Gadfly.plot(path::RegularizationPath, gadfly_args...;
 
     inmdframe=melt(indata,x)
     outmdframe=melt(outdata,x)
-    rename!(inmdframe,:value,:coefficients)
-    rename!(outmdframe,:value,:coefficients)
+    rename!(inmdframe,:value=>:coefficients)
+    rename!(outmdframe,:value=>:coefficients)
     inmdframe = inmdframe[convert(BitArray,map(b->!isnan(b),inmdframe[:coefficients])),:]
     outmdframe = outmdframe[convert(BitArray,map(b->!isnan(b),outmdframe[:coefficients])),:]
 
