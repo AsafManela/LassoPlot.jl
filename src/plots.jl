@@ -1,4 +1,5 @@
-using Gadfly, DataFrames, Compat, MLBase
+using Gadfly, DataFrames, MLBase
+
 function Gadfly.plot(path::RegularizationPath, gadfly_args...;
     x=:segment, varnames=nothing, selectedvars=[], select=:AICc, showselectors=[:AICc,:CVmin,:CV1se], nCVfolds=10)
     β=coef(path)
@@ -22,9 +23,6 @@ function Gadfly.plot(path::RegularizationPath, gadfly_args...;
         indata[x]=1:nλ
     end
     outdata = deepcopy(indata)
-
-    # CVfun = eval(select)
-    # CVfun(oosdevs)
 
     # automatic selectors
     # xintercept = Float64[]
@@ -91,9 +89,9 @@ function Gadfly.plot(path::RegularizationPath, gadfly_args...;
     inmdframe = inmdframe[convert(BitArray,map(b->!isnan(b),inmdframe[:coefficients])),:]
     outmdframe = outmdframe[convert(BitArray,map(b->!isnan(b),outmdframe[:coefficients])),:]
 
-    layers=@compat Vector{Layer}()
+    layers=Vector{Layer}()
     if length(dashed_vlines) > 0
-        append!(layers,layer(xintercept=dashed_vlines, Geom.vline, Theme(default_color=colorant"black",line_style=Gadfly.get_stroke_vector(:dot))))
+        append!(layers,layer(xintercept=dashed_vlines, Geom.vline, Theme(default_color=colorant"black",line_style=:dot)))
     end
     if length(solid_vlines) > 0
         append!(layers,layer(xintercept=solid_vlines, Geom.vline, Theme(default_color=colorant"black")))
