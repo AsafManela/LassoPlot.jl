@@ -13,6 +13,10 @@ srand(243214)
         (n,p) = size(X)
         @testset "γ=$γ" for γ in [0 2 10]
             fitname = "gamma$γ.pf1"
+            if !isfile(joinpath(datapath,"gamlr.$family.$fitname.params.csv"))
+                # file names in older Lasso packages
+                fitname = "gamma$γ"
+            end
             # get gamlr.R params and estimates
             params = CSV.read(joinpath(datapath,"gamlr.$family.$fitname.params.csv"))
             fittable = CSV.read(joinpath(datapath,"gamlr.$family.$fitname.fit.csv"))

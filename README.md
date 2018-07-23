@@ -8,6 +8,13 @@ LassoPlot.jl is a companion package to [Lasso.jl](https://github.com/simonster/L
 
 ## Quick start
 
+Install the LassoPlot package.
+Note: tests currently use my fork of Lasso because upstream breaks.
+```julia
+Pkg.clone("https://github.com/AsafManela/Lasso.jl")
+Pkg.clone("https://github.com/AsafManela/LassoPlot.jl")
+```
+
 first fit a Lasso path
 
 ```julia
