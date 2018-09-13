@@ -91,7 +91,7 @@ function Gadfly.plot(path::RegularizationPath, gadfly_args...;
 
     layers=Vector{Layer}()
     if length(dashed_vlines) > 0
-        append!(layers,layer(xintercept=dashed_vlines, Geom.vline, Theme(default_color=colorant"black",line_style=:dot)))
+        append!(layers,layer(xintercept=dashed_vlines, Geom.vline, Theme(default_color=colorant"black",line_style=[:dot])))
     end
     if length(solid_vlines) > 0
         append!(layers,layer(xintercept=solid_vlines, Geom.vline, Theme(default_color=colorant"black")))
