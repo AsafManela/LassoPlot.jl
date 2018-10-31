@@ -62,11 +62,11 @@ function Gadfly.plot(path::RegularizationPath, gadfly_args...;
         if select == :all
             selectedvars = 1:p
         elseif select == :AICc
-            selectedvars = find(β[:,minAICcix].!=0)
+            selectedvars = findall(!iszero, β[:,minAICcix])
         elseif select == :CVmin
-            selectedvars = find(β[:,segCVmin].!=0)
+            selectedvars = findall(!iszero, β[:,segCVmin])
         elseif select == :CV1se
-            selectedvars = find(β[:,segCV1se].!=0)
+            selectedvars = findall(!iszero, β[:,segCV1se])
         else
             error("unknown selector $select")
         end
@@ -74,12 +74,12 @@ function Gadfly.plot(path::RegularizationPath, gadfly_args...;
 
     # colored paths
     for j in selectedvars
-        indata[varnames[j]]=vec(full(β[j,:]))
+        indata[varnames[j]]=Vector(β[j,:])
     end
 
     # grayed out paths
     for j in setdiff(1:p,selectedvars)
-        outdata[varnames[j]]=vec(full(β[j,:]))
+        outdata[varnames[j]]=Vector(β[j,:])
     end
 
     inmdframe=melt(indata,x)
