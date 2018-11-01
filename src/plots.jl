@@ -1,6 +1,4 @@
-using Gadfly, DataFrames, MLBase
-
-function Gadfly.plot(path::RegularizationPath, gadfly_args...;
+function Gadfly.plot(path::RegularizationPath, elements::Union{Array{Gadfly.Layer,1}, Function, Gadfly.Element, Gadfly.Theme, Type}...;
     x=:segment, varnames=nothing, selectedvars=[], select=:AICc, showselectors=[:AICc,:CVmin,:CV1se], nCVfolds=10)
     β=coef(path)
     if hasintercept(path)
@@ -103,5 +101,5 @@ function Gadfly.plot(path::RegularizationPath, gadfly_args...;
       append!(layers,layer(outmdframe,x=x,y="coefficients",group="variable",Geom.line,Theme(default_color=colorant"lightgray")))
     end
 
-    Gadfly.plot(layers..., Stat.xticks(coverage_weight=1.0), gadfly_args...)
+    Gadfly.plot(layers..., Stat.xticks(coverage_weight=1.0), elements...)
 end
