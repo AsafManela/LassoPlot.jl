@@ -1,5 +1,6 @@
 julia 0.7
 Lasso
-Gadfly
+Plots
+StatPlots
 DataFrames
 MLBase

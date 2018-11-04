@@ -1,4 +1,35 @@
-function Gadfly.plot(path::RegularizationPath, elements::Union{Array{Gadfly.Layer,1}, Function, Gadfly.Element, Gadfly.Theme, Type}...;
+"""
+    plot(path::RegularizationPath, args...; <keyword arguments>)
+
+Plots a `RegularizationPath` fitted with the `Lasso` package.
+
+The minimum AICc segment is represented by a solid vertical line and the CVmin
+and CV1se cross-validation selected segments by dashed vertical lines.
+
+By default it shows nonzero coefficients at the AICc in color and the rest grayed out.
+
+LassoPlot uses Plots.jl, so you can set any supported backend before plotting,
+and add any features of the plot afterwards.
+
+# Example:
+```julia
+    using Lasso, LassoPath, Plots
+    path = fit(LassoPath, X, y, dist, link)
+    plot(path)
+```
+# Arguments
+- `args...` additional arguments passed to Plots.plot()
+
+# Keywords
+- `x=:segment` one of (:segment, :λ, :logλ)
+- `varnames=nothing` specify variable names
+- `select=:AICc` Selection criteria in (:AIC, :CVmin, :CV1se) for which coefficients
+    will be shown in color. The rest are grayed out.
+- `showselectors=[:AICc,:CVmin,:CV1se]` shown vertical lines
+- `selectedvars=[]` Subset of the variables to present, or empty vector for all
+- `kwargs...` additional keyword arguments passed along to fit(GammaLassoPath,...)
+"""
+function Plots.plot(path::RegularizationPath, args...;
     x=:segment, varnames=nothing, selectedvars=[], select=:AICc, showselectors=[:AICc,:CVmin,:CV1se], nCVfolds=10)
     β=coef(path)
     if hasintercept(path)
@@ -87,19 +118,19 @@ function Gadfly.plot(path::RegularizationPath, elements::Union{Array{Gadfly.Laye
     inmdframe = inmdframe[convert(BitArray,map(b->!isnan(b),inmdframe[:coefficients])),:]
     outmdframe = outmdframe[convert(BitArray,map(b->!isnan(b),outmdframe[:coefficients])),:]
 
-    layers=Vector{Layer}()
-    if length(dashed_vlines) > 0
-        append!(layers,layer(xintercept=dashed_vlines, Geom.vline, Theme(default_color=colorant"black",line_style=[:dot])))
-    end
-    if length(solid_vlines) > 0
-        append!(layers,layer(xintercept=solid_vlines, Geom.vline, Theme(default_color=colorant"black")))
-    end
+    p = plot(xlabel=string(x), ylabel="Coefficient", args...)
     if size(inmdframe,1) > 0
-      append!(layers, layer(inmdframe,x=x,y="coefficients",color="variable",Geom.line))
+      @df inmdframe plot!(cols(x), :coefficients, group=:variable)
     end
     if size(outmdframe,1) > 0
-      append!(layers,layer(outmdframe,x=x,y="coefficients",group="variable",Geom.line,Theme(default_color=colorant"lightgray")))
+      @df outmdframe plot!(cols(x), :coefficients, group=:variable, palette=:grays)
+    end
+    if length(dashed_vlines) > 0
+        vline!(dashed_vlines, line = (:dash, 0.5, 2, :black), label="")
+    end
+    if length(solid_vlines) > 0
+        vline!(solid_vlines, line = (:solid, 0.5, 2, :black), label="")
     end
 
-    Gadfly.plot(layers..., Stat.xticks(coverage_weight=1.0), elements...)
+    p
 end

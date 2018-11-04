@@ -2,7 +2,7 @@ module LassoPlot
 
 export plot
 
-using Lasso, Gadfly, DataFrames, MLBase
+using Lasso, Plots, StatPlots, DataFrames, MLBase
 
 include("plots.jl")
 
