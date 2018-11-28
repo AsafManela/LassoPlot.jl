@@ -23,7 +23,7 @@ and add any features of the plot afterwards.
 # Keywords
 - `x=:segment` one of (:segment, :λ, :logλ)
 - `varnames=nothing` specify variable names
-- `select=:AICc` Selection criteria in (:AIC, :CVmin, :CV1se) for which coefficients
+- `select=:AICc` Selection criteria in (:AICc, :CVmin, :CV1se) for which coefficients
     will be shown in color. The rest are grayed out.
 - `showselectors=[:AICc,:CVmin,:CV1se]` shown vertical lines
 - `selectedvars=[]` Subset of the variables to present, or empty vector for all
