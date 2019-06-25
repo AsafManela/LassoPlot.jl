@@ -1,5 +1,6 @@
 name = "LassoPlot"
 uuid = "21d151f5-1f6d-55ec-8524-1c9aee35b0a4"
+version = "1.1.0"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
@@ -10,6 +11,7 @@ StatsPlots = "f3b207a7-027a-5e70-b257-86293d7955fd"
 
 [compat]
 julia = "0.7, 1"
+Lasso = "0.4"
 
 [extras]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
