@@ -23,14 +23,14 @@ and add any features of the plot afterwards.
 # Keywords
 - `x=:segment` one of (:segment, :λ, :logλ)
 - `varnames=nothing` specify variable names
-- `select=:AICc` Selection criteria in (:AICc, :CVmin, :CV1se) for which coefficients
+- `select=MinAICc()` Path segment selector (e.g. MinBIC(), MinCVmse(path, 5), MinCV1se(path, 5)) for which coefficients
     will be shown in color. The rest are grayed out.
-- `showselectors=[:AICc,:CVmin,:CV1se]` shown vertical lines
+- `showselectors=[MinAICc(), MinCVmse(path, 5), MinCV1se(path, 5)]` shown vertical lines
 - `selectedvars=[]` Subset of the variables to present, or empty vector for all
 - `kwargs...` additional keyword arguments passed along to fit(GammaLassoPath,...)
 """
 function Plots.plot(path::RegularizationPath, args...;
-    x=:segment, varnames=nothing, selectedvars=[], select=:AICc, showselectors=[:AICc,:CVmin,:CV1se], nCVfolds=10)
+    x=:segment, varnames=nothing, selectedvars=[], select=MinAICc(), showselectors=[MinAICc(), MinCVmse(path, 10), MinCV1se(path, 10)])
     β=coef(path)
     if hasintercept(path)
         β = β[2:end,:]
@@ -58,46 +58,24 @@ function Plots.plot(path::RegularizationPath, args...;
     dashed_vlines=Float64[]
     solid_vlines=Float64[]
 
-    if select == :AICc || :AICc in showselectors
-        minAICcix=minAICc(path)
-        if select == :AICc
-            push!(solid_vlines,indata[minAICcix,x])
-        else
-            push!(dashed_vlines,indata[minAICcix,x])
-        end
-    end
+    selectors = union([select], showselectors)
+    ixselect = 0
 
-    if select == :CVmin || :CVmin in showselectors
-        gen = Kfold(length(path.m.rr.y),nCVfolds)
-        segCVmin = cross_validate_path(path;gen=gen,select=:CVmin)
-        if select == :CVmin
-            push!(solid_vlines,indata[segCVmin,x])
+    for s in selectors
+        ixshown = segselect(path, s)
+        if select == s
+            push!(solid_vlines,indata[ixshown,x])
+            ixselect = ixshown
         else
-            push!(dashed_vlines,indata[segCVmin,x])
-        end
-    end
-
-    if select == :CV1se || :CV1se in showselectors
-        gen = Kfold(length(path.m.rr.y),nCVfolds)
-        segCV1se = cross_validate_path(path;gen=gen,select=:CV1se)
-        if select == :CV1se
-            push!(solid_vlines,indata[segCV1se,x])
-        else
-            push!(dashed_vlines,indata[segCV1se,x])
+            push!(dashed_vlines,indata[ixshown,x])
         end
     end
 
     if length(selectedvars) == 0
-        if select == :all
+        if isa(select, AllSeg)
             selectedvars = 1:p
-        elseif select == :AICc
-            selectedvars = findall(!iszero, β[:,minAICcix])
-        elseif select == :CVmin
-            selectedvars = findall(!iszero, β[:,segCVmin])
-        elseif select == :CV1se
-            selectedvars = findall(!iszero, β[:,segCV1se])
         else
-            error("unknown selector $select")
+            selectedvars = findall(!iszero, β[:,ixselect])
         end
     end
 
