@@ -1,4 +1,6 @@
 *.jl.cov
 *.jl.*.cov
 *.jl.mem
+*.svg
 test/plots/
+Manifest.toml

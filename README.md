@@ -1,8 +1,8 @@
 # LassoPlot
 
-| Linux/MacOS | Windows | Code |
-| --- | --- | --- |
-| [![][travis-img]][travis-url]  | [![][appveyor-img]][appveyor-url]  | [![][coveralls-img]][coveralls-url] |
+| Linux/MacOS/Windows | Code |
+| --- | --- |
+| [![][actions-img]][actions-url] | [![][codecov-img]][codecov-url] |
 
 LassoPlot.jl is a companion package to [Lasso.jl](https://github.com/JuliaStats/Lasso.jl) which plots regularization paths in a similar fashion to the glmnet and gamlr R packages.
 
@@ -36,16 +36,8 @@ See documentation of the provided plot function for optional arguments (type
 help?> plot
 ```
 
-[travis-img]: https://travis-ci.org/AsafManela/LassoPlot.jl.svg?branch=master
-[travis-url]: https://travis-ci.org/AsafManela/LassoPlot.jl
+[actions-img]: https://github.com/AsafManela/LassoPlot.jl/workflows/CI/badge.svg
+[actions-url]: https://github.com/AsafManela/LassoPlot.jl/actions?query=workflow%3ACI+branch%3Amaster
 
-[appveyor-img]: https://ci.appveyor.com/api/projects/status/github/AsafManela/LassoPlot.jl?svg=true
-[appveyor-url]: https://ci.appveyor.com/project/AsafManela/lassoplot-jl
-
-[coveralls-img]: https://coveralls.io/repos/AsafManela/LassoPlot.jl/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/r/AsafManela/LassoPlot.jl?branch=master
-
-[pkg-0.6-img]: http://pkg.julialang.org/badges/LassoPlot_0.6.svg
-[pkg-0.6-url]: http://pkg.julialang.org/?pkg=LassoPlot&ver=0.6
-[pkg-0.7-img]: http://pkg.julialang.org/badges/LassoPlot_0.7.svg
-[pkg-0.7-url]: http://pkg.julialang.org/?pkg=LassoPlot&ver=0.7
+[codecov-img]: http://codecov.io/github/AsafManela/LassoPlot.jl/coverage.svg?branch=master
+[codecov-url]: http://codecov.io/github/AsafManela/LassoPlot.jl?branch=master

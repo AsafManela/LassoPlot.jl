@@ -44,12 +44,12 @@ function Plots.plot(path::RegularizationPath, args...;
 
     indata=DataFrame()
     if x==:λ
-        indata[x]=path.λ
+        indata[:, x]=path.λ
     elseif x==:logλ
-        indata[x]=log.(path.λ)
+        indata[:, x]=log.(path.λ)
     else
         x=:segment
-        indata[x]=1:nλ
+        indata[:, x]=1:nλ
     end
     outdata = deepcopy(indata)
 
@@ -81,20 +81,20 @@ function Plots.plot(path::RegularizationPath, args...;
 
     # colored paths
     for j in selectedvars
-        indata[varnames[j]]=Vector(β[j,:])
+        indata[:, varnames[j]]=Vector(β[j,:])
     end
 
     # grayed out paths
     for j in setdiff(1:p,selectedvars)
-        outdata[varnames[j]]=Vector(β[j,:])
+        outdata[:, varnames[j]]=Vector(β[j,:])
     end
 
-    inmdframe=melt(indata,x)
-    outmdframe=melt(outdata,x)
+    inmdframe=stack(indata, Not(x))
+    outmdframe=stack(outdata, Not(x))
     rename!(inmdframe,:value=>:coefficients)
     rename!(outmdframe,:value=>:coefficients)
-    inmdframe = inmdframe[convert(BitArray,map(b->!isnan(b),inmdframe[:coefficients])),:]
-    outmdframe = outmdframe[convert(BitArray,map(b->!isnan(b),outmdframe[:coefficients])),:]
+    inmdframe = inmdframe[convert(BitArray,map(b->!isnan(b),inmdframe.coefficients)),:]
+    outmdframe = outmdframe[convert(BitArray,map(b->!isnan(b),outmdframe.coefficients)),:]
 
     p = plot(xlabel=string(x), ylabel="Coefficient", args...)
     if size(inmdframe,1) > 0
