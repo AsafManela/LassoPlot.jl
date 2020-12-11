@@ -12,7 +12,7 @@ StatsPlots = "f3b207a7-027a-5e70-b257-86293d7955fd"
 [compat]
 julia = "0.7, 1"
 DataFrames = "0.22"
-Lasso = "≥0.4.1"
+Lasso = "0.6"
 MLBase = "0.8"
 Plots = "1.9"
 StatsPlots = "0.14"
